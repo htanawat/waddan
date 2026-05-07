@@ -1,115 +1,67 @@
 import React, { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import img1 from "../assets/img/carousel/1.jpg";
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { LotusIcon } from "./icons";
 
-const cardData = [1, 2, 3, 4];
-
-export const Services = (props) => {
+export const Services = () => {
   const [activities, setActivities] = useState([]);
+
   useEffect(() => {
     fetch(
       "https://sycl7h5b43.execute-api.ap-southeast-1.amazonaws.com/admin/contents?type=activity"
     )
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        data.map((dj) => {
+        data.forEach((dj) => {
           dj.data = JSON.parse(dj.data);
         });
         setActivities(data);
-        // console.log(data);
       });
   }, []);
 
+  const items = activities.filter((a) => a?.state === "active");
+
   return (
-    <div id="services" className="text-center">
-      <div className="container">
-        {/* <div className="section-title"> */}
-        <h2 style={{ marginBottom: "30px" }}>ข่าวและกิจกรรม</h2>
-        {/* <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed
-            dapibus leonec.
-          </p> */}
-        {/* </div> */}
-        <div style={{ width: "100%", overflow: "scroll" }}>
-          <div
-            style={{
-              display: "inline-flex",
-              gap: "10px",
-            }}
-          >
-            {activities.map((data, i) => {
-              if (data?.state === "active") {
-                return (
-                  <Card id="service-card">
-                    <Card.Img
-                      variant="top"
-                      height="200"
-                      style={{ objectFit: "cover" }}
-                      src={data?.data?.titleImageURL}
-                    />
-                    <Card.Body>
-                      <Card.Title
-                        style={{
-                          fontWeight: "700",
-                          fontFamily: "charm",
-                          fontSize: "18px",
-                        }}
-                      >
-                        {data.data.title}
-                      </Card.Title>
-                      <Card.Text
-                        style={{
-                          color: "#333333",
-                          fontFamily: "chakra",
-                          height: "40px",
-                          textOverflow: "ellipsis",
-                          overflow: "scroll",
-                        }}
-                      >
-                        <span>{data?.data?.caption}</span>
-                      </Card.Text>
-                      <Link
-                        style={{
-                          color: "#ffffff",
-                          fontFamily: "charm",
-                          background: "#a7261d",
-                          border: "none",
-                          fontSize: "18px",
-                          fontWeight: "700",
-                          padding: "0px 8px 0px 8px",
-                          borderRadius: "8px",
-                        }}
-                        variant="primary"
-                        to={`activities/${encodeURIComponent(data?.timestamp)}`}
-                      >
-                        อ่านต่อ
-                      </Link>
-                    </Card.Body>
-                  </Card>
-                );
-              }
-            })}
+    <section id="activities" className="cinematic-section cinematic-section--light">
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+        <div className="text-center">
+          <span className="cinematic-eyebrow">News &middot; Events</span>
+          <h2 className="cinematic-title">ข่าวและกิจกรรม</h2>
+          <div className="section-ornament" aria-hidden="true">
+            <span className="section-ornament__line" />
+            <LotusIcon className="section-ornament__icon" size={22} />
+            <span className="section-ornament__line" />
           </div>
+          <p className="cinematic-subtitle">
+            ติดตามข่าวสารและกิจกรรมทางพระพุทธศาสนา ประเพณีและพิธีสำคัญของวัดด่าน พระราม 3
+          </p>
         </div>
 
-        {/* <div className="row">
-          {props.data
-            ? props.data.map((d, i) => (
-                <div key={`${d.name}-${i}`} className="col-md-4">
-                  {" "}
-                  <i className={d.icon}></i>
-                  <div className="service-desc">
-                    <h3>{d.name}</h3>
-                    <p>{d.text}</p>
-                  </div>
-                </div>
-              ))
-            : "loading"}
-        </div> */}
+        <div className="thai-grid">
+          {items.map((item, i) => (
+            <Link
+              key={item?.timestamp || i}
+              to={`activities/${encodeURIComponent(item?.timestamp)}`}
+              className="thai-card"
+              style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
+            >
+              <div className="thai-card__media">
+                {item?.data?.titleImageURL && (
+                  <img
+                    src={item.data.titleImageURL}
+                    alt={item?.data?.title || ""}
+                    loading="lazy"
+                  />
+                )}
+              </div>
+              <div className="thai-card__body">
+                <h3 className="thai-card__title">{item?.data?.title}</h3>
+                <p className="thai-card__caption">{item?.data?.caption}</p>
+                <span className="thai-card__cta">อ่านต่อ</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };

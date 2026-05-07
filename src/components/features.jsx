@@ -1,75 +1,69 @@
 import React, { useState, useEffect } from "react";
-import img1 from "../assets/img/carousel/1.jpg";
-import img2 from "../assets/img/carousel/2.jpg";
-import img3 from "../assets/img/carousel/3.jpg";
-import img4 from "../assets/img/carousel/4.jpg";
 import Carousel from "react-bootstrap/Carousel";
-// import ExampleCarouselImage from '../assets/img/carousel/1.jpg';
+import { LotusIcon } from "./icons";
 
-export const Features = (props) => {
-  const images = [img1, img2, img3];
-  const imageShow = useState(0);
-
+export const Features = () => {
   const [highlight, setHighlight] = useState([]);
+
   useEffect(() => {
     fetch(
       "https://sycl7h5b43.execute-api.ap-southeast-1.amazonaws.com/admin/contents?type=highlight"
     )
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        data.map((dj) => {
+        data.forEach((dj) => {
           dj.data = JSON.parse(dj.data);
         });
         setHighlight(data);
-        // console.log(data);
       });
   }, []);
 
+  const items = highlight.filter((h) => h?.state === "active");
+
   return (
-    <div
-      id="features"
-      style={{ paddingBottom: "30px" }}
-      className="text-center"
-    >
-      <div className="container">
-        <h2
-          style={{
-            fontSize: "38px",
-            marginTop: "20px",
-            marginBottom: "30px",
-            fontWeight: 700,
-            fontFamily: "taviraj, serif",
-          }}
-        >
-          หน้าแรก
-        </h2>
-        {/* </div> */}
-        <div className="row" style={{ width: "100%" }}>
-          <Carousel>
-            {highlight.map((data, i) => {
-              if (data?.state === "active") {
-                return (
-                  <Carousel.Item key={i}>
-                    <img
-                      style={{
-                        width: "100%",
-                        maxHeight: "530px",
-                        objectFit: "cover",
-                      }}
-                      src={data?.data?.titleImageURL}
-                    />
-                    <Carousel.Caption style={{ background: "#33333388" }}>
-                      <h3>{data?.data?.title}</h3>
-                      <p>{data?.data?.caption}</p>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                );
-              }
-            })}
+    <section id="features" className="features-section">
+      <div className="features-section__glow" aria-hidden="true" />
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+        <div className="features-header">
+          <span className="features-header__eyebrow">
+            <span className="features-header__eyebrow-line" />
+            <span>Highlights</span>
+            <span className="features-header__eyebrow-line" />
+          </span>
+          <h2 className="features-header__title">หน้าแรก</h2>
+          <p className="features-header__subtitle">
+            ประมวลภาพและข่าวสารสำคัญของวัดด่าน พระราม 3
+          </p>
+          <div className="features-header__divider" aria-hidden="true">
+            <span className="dot" />
+            <span className="line" />
+            <LotusIcon size={20} />
+            <span className="line" />
+            <span className="dot" />
+          </div>
+        </div>
+
+        <div className="row" style={{ width: "100%", margin: 0 }}>
+          <Carousel fade interval={6000} indicators controls>
+            {items.map((data, i) => (
+              <Carousel.Item key={data?.timestamp || i}>
+                <div className="features-slide">
+                  <img
+                    className="features-slide__img"
+                    src={data?.data?.titleImageURL}
+                    alt={data?.data?.title || ""}
+                  />
+                  <div className="features-slide__overlay" aria-hidden="true" />
+                </div>
+                <Carousel.Caption className="features-slide__caption">
+                  <h3>{data?.data?.title}</h3>
+                  <p>{data?.data?.caption}</p>
+                </Carousel.Caption>
+              </Carousel.Item>
+            ))}
           </Carousel>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

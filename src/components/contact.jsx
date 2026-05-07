@@ -1,32 +1,12 @@
-import { useEffect, useState } from "react";
-import emailjs from "emailjs-com";
-import React from "react";
-
-const contactData = [
-  { name: "เจ้าอาวาส", value: "089-915-2077" },
-  { name: "กิจนิมนต์-ยืมของกิจ พระสมชาย", value: "081-742-5967" },
-  { name: "ฌาปนสถาน ต๊อก", value: "095-826-2959" },
-  { name: "เลขานุการ ธีรพงษ์", value: "080-303-6512" },
-];
+import React, { useEffect, useState } from "react";
+import { LotusIcon, PhoneIcon, PinIcon } from "./icons";
 
 const address = [
-  "เลขที่872 ถนนพระราม3 ซอย34",
+  "เลขที่ 872 ถนนพระราม 3 ซอย 34",
   "แขวงบางโพงพาง เขตยานนาวา กรุงเทพมหานคร",
 ];
 
-const initialState = {
-  name: "",
-  email: "",
-  message: "",
-};
-export const Contact = (props) => {
-  const [{ name, email, message }, setState] = useState(initialState);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({ ...prevState, [name]: value }));
-  };
-  const clearState = () => setState({ ...initialState });
+export const Contact = () => {
   const [contact, setContact] = useState(null);
 
   useEffect(() => {
@@ -41,223 +21,103 @@ export const Contact = (props) => {
           data[0].data = JSON.parse(data[0].data);
           setContact(data[0]);
         }
-        // console.log()
-        console.log(data);
-        // const items = JSON.parse(data.data);
-        // setActivities(data);
-        // console.log(data);
       });
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(name, email, message);
+  const phones = (contact?.data?.contents || [])
+    .map((raw) => {
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    })
+    .filter(Boolean);
 
-    {
-      /* replace below with your own Service ID, Template ID and Public Key from your EmailJS account */
-    }
-
-    emailjs
-      .sendForm(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
-        e.target,
-        "YOUR_PUBLIC_KEY"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-          clearState();
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
-  };
   return (
-    <div>
-      <div id="contact">
-        <div className="container">
-          <div className="col-md-8">
-            <div className="row">
-              <div className="section-title">
-                <h2
-                  style={{
-                    color: "#a7261d",
-                    fontWeight: "700",
-                    marginTop: "-140px",
-                  }}
-                >
-                  ติดต่อสอบถาม
-                </h2>
-                {contact?.data?.contents.map((data, i) => {
-                  const contactData = JSON.parse(data);
-                  return (
-                    <p
-                      style={{
-                        color: "#333333",
-                        fontSize: "18px",
-                        fontWeight: "700",
-                        fontFamily: "chakra",
-                      }}
-                    >
-                      {contactData.name}{" "}
-                      <i
-                        class="fa fa-solid fa-phone"
-                        style={{ marginLeft: "30px" }}
-                      />{" "}
-                      {contactData.phone}
-                    </p>
-                  );
-                })}
-              </div>
-              {/* <form name="sentMessage" validate onSubmit={handleSubmit}>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        className="form-control"
-                        placeholder="Name"
-                        required
-                        onChange={handleChange}
-                      />
-                      <p className="help-block text-danger"></p>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="form-control"
-                        placeholder="Email"
-                        required
-                        onChange={handleChange}
-                      />
-                      <p className="help-block text-danger"></p>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <textarea
-                    name="message"
-                    id="message"
-                    className="form-control"
-                    rows="4"
-                    placeholder="Message"
-                    required
-                    onChange={handleChange}
-                  ></textarea>
-                  <p className="help-block text-danger"></p>
-                </div>
-                <div id="success"></div>
-                <button type="submit" className="btn btn-custom btn-lg">
-                  Send Message
-                </button>
-              </form> */}
-            </div>
+    <section id="contact" className="contact-section">
+      <div className="container">
+        <div className="text-center" style={{ marginBottom: 56 }}>
+          <span className="cinematic-eyebrow">Get in touch</span>
+          <h2 className="cinematic-title">ติดต่อสอบถาม</h2>
+          <div className="section-ornament" aria-hidden="true">
+            <span className="section-ornament__line" />
+            <LotusIcon className="section-ornament__icon" size={22} />
+            <span className="section-ornament__line" />
           </div>
-          {/* <div className="col-md-3 col-md-offset-1 contact-info">
-            <div className="contact-item">
-              <h3>Contact Info</h3>
-              <p>
-                <span>
-                  <i className="fa fa-map-marker"></i> Address
-                </span>
-                {props.data ? props.data.address : "loading"}
-              </p>
-            </div>
-            <div className="contact-item">
-              <p>
-                <span>
-                  <i className="fa fa-phone"></i> Phone
-                </span>{" "}
-                {props.data ? props.data.phone : "loading"}
-              </p>
-            </div>
-            <div className="contact-item">
-              <p>
-                <span>
-                  <i className="fa fa-envelope-o"></i> Email
-                </span>{" "}
-                {props.data ? props.data.email : "loading"}
-              </p>
-            </div>
-          </div> */}
-          {/* <div className="col-md-12">
-            <div className="row">
-              <div className="social">
-                <ul>
-                  <li>
-                    <a href={props.data ? props.data.facebook : "/"}>
-                      <i className="fa fa-facebook"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={props.data ? props.data.twitter : "/"}>
-                      <i className="fa fa-twitter"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href={props.data ? props.data.youtube : "/"}>
-                      <i className="fa fa-youtube"></i>
-                    </a>
-                  </li>
-                </ul>
+        </div>
+
+        <div className="contact-grid">
+          <aside className="contact-info-card">
+            <div className="contact-info-card__head">
+              <div className="contact-info-card__icon" aria-hidden="true">
+                <PinIcon size={20} />
+              </div>
+              <div>
+                <span className="contact-info-card__label">ที่อยู่</span>
+                <h3 className="contact-info-card__title">วัดด่าน พระราม 3</h3>
               </div>
             </div>
-          </div> */}
-          {/* <div style="max-width:100%;overflow:hidden;color:red;width:500px;height:500px;"><div id="embed-map-display" style="height:100%; width:100%;max-width:100%;"> */}
-          <div style={{}}></div>
-          {/* </div><a class="our-googlemap-code" rel="nofollow" href="https://www.bootstrapskins.com/themes" id="auth-map-data">premium bootstrap themes</a><style>#embed-map-display img{max-width:none!important;background:none!important;font-size: inherit;font-weight:inherit;}</style></div> */}
-        </div>
-        <div
-          className="container"
-          style={{ display: "flex", flexDirection: "row" }}
-        >
-          <div style={{ marginRight: "30px" }}>
+            <div className="contact-info-card__address">
+              {address.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
+
+            {phones.length > 0 && (
+              <>
+                <div className="contact-info-card__rule" aria-hidden="true" />
+                <div className="contact-info-card__phones">
+                  <span className="contact-info-card__label">โทรศัพท์</span>
+                  <ul>
+                    {phones.map((c, i) => (
+                      <li key={i}>
+                        <PhoneIcon size={14} />
+                        <span className="phone-name">{c.name}</span>
+                        <span className="phone-num">{c.phone}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+          </aside>
+
+          <div className="contact-map-card">
             <iframe
-              style={{
-                height: "200px",
-                width: "300px",
-                border: "0",
-              }}
-              frameborder="0"
+              title="แผนที่วัดด่าน พระราม 3"
               src="https://www.google.com/maps/embed/v1/place?q=วัดด่าน&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
-            ></iframe>
-          </div>
-          <div>
-            {address.map((data, i) => {
-              return (
-                <p
-                  style={{
-                    color: "#333333",
-                    fontSize: "18px",
-                    fontWeight: "700",
-                    fontFamily: "chakra",
-                  }}
-                >
-                  {data}
-                </p>
-              );
-            })}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </div>
       </div>
-      <div id="footer">
-        <div className="container text-center">
-          <p>
-            Copyright &copy; 2024 วัดด่าน พระราม 3. Design by{" "}
-            <a href="http://www.templatewire.com" rel="nofollow">
-              ธนาวัฒน์ ฮ้อศิริมานนท์
-            </a>
-          </p>
+
+      <footer className="site-footer" role="contentinfo">
+        <div className="site-footer__top" aria-hidden="true">
+          <span className="site-footer__rule" />
+          <LotusIcon size={20} />
+          <span className="site-footer__rule" />
         </div>
-      </div>
-    </div>
+        <div className="container site-footer__inner">
+          <div className="site-footer__brand">
+            <span className="site-footer__brand-name">วัดด่าน พระราม 3</span>
+            <span className="site-footer__brand-sub">
+              Wat Dan &middot; Rama III &middot; Bangkok
+            </span>
+          </div>
+          <div className="site-footer__meta">
+            <span>&copy; {new Date().getFullYear()} วัดด่าน พระราม 3</span>
+            <span className="site-footer__dot" aria-hidden="true">&middot;</span>
+            <span>
+              Design by{" "}
+              <span className="site-footer__credit">ธนาวัฒน์ ฮ้อศิริมานนท์</span>
+            </span>
+          </div>
+        </div>
+      </footer>
+    </section>
   );
 };
