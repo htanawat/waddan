@@ -86,7 +86,7 @@ export const Header = (props) => {
         <div className="overlay">
           <div className="container">
             <div className="row">
-              <div className="col-md-10 col-md-offset-1 intro-text">
+              <div className="col-md-10 offset-md-1 intro-text">
                 <span className="intro__eyebrow">
                   Wat Dan · Rama III · Bangkok
                 </span>

@@ -25,7 +25,7 @@ export const About = (props) => {
       <div id="about">
         <div className="container">
           <div className="row" style={{ alignItems: "center" }}>
-            <div className="col-xs-12 col-md-6">
+            <div className="col-12 col-md-6">
               <div style={{ position: "relative" }}>
                 <img
                   src={AboutImage}
@@ -34,7 +34,7 @@ export const About = (props) => {
                 />
               </div>
             </div>
-            <div className="col-xs-12 col-md-6">
+            <div className="col-12 col-md-6">
               <div className="about-text">
                 <span
                   className="cinematic-eyebrow"
