@@ -64,7 +64,7 @@ const LotusDivider = () => (
 
 export const Header = (props) => {
   return (
-    <header id="header">
+    <header id="home">
       <div className="intro">
         <div className="intro__bg" aria-hidden="true" />
         <div className="intro__overlay-warm" aria-hidden="true" />

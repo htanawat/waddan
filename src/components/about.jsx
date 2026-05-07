@@ -21,7 +21,7 @@ export const About = (props) => {
   }, []);
 
   return (
-    <section id="aboutus">
+    <section id="aboutus" style={{ scrollMarginTop: "100px" }}>
       <div id="about">
         <div className="container">
           <div className="row" style={{ alignItems: "center" }}>

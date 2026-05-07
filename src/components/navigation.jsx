@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import Logo from "../assets/img/logo.png";
 
 const navData = [
@@ -14,6 +11,7 @@ const navData = [
 
 export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -23,79 +21,61 @@ export const Navigation = () => {
   }, []);
 
   return (
-    <Navbar
+    <nav
       id="navbarcustom"
-      style={{
-        background: scrolled
-          ? "rgba(251, 244, 230, 0.94)"
-          : "rgba(251, 244, 230, 0.55)",
-        backdropFilter: "saturate(160%) blur(12px)",
-        WebkitBackdropFilter: "saturate(160%) blur(12px)",
-        marginBottom: "-92px",
-        lineHeight: "70px",
-        position: "fixed",
-        zIndex: 10000,
-        width: "100vw",
-        top: 0,
-        borderBottom: scrolled
-          ? "1px solid rgba(201, 150, 43, 0.35)"
-          : "1px solid rgba(201, 150, 43, 0.15)",
-        boxShadow: scrolled
-          ? "0 8px 28px rgba(94, 19, 16, 0.12)"
-          : "0 2px 12px rgba(94, 19, 16, 0.04)",
-        transition:
-          "background 320ms ease, box-shadow 320ms ease, border-color 320ms ease",
-      }}
+      className={`thai-nav ${scrolled ? "is-scrolled" : ""} ${open ? "is-open" : ""}`}
+      aria-label="ระบบนำทางหลัก"
     >
-      <Container style={{ maxWidth: "none", padding: "0px 30px 0px 30px" }}>
-        <Navbar.Brand href="#home" style={{ display: "flex", alignItems: "center" }}>
-          <img
-            style={{
-              width: "70px",
-              height: "70px",
-              marginRight: "16px",
-              filter: "drop-shadow(0 4px 12px rgba(94, 19, 16, 0.18))",
-              transition: "transform 320ms ease",
-            }}
-            src={Logo}
-            alt="วัดด่าน พระราม 3 logo"
-          />
-          <span
-            style={{
-              color: "#5C1310",
-              fontSize: "24px",
-              fontFamily: "taviraj, charm, serif",
-              fontWeight: 700,
-              letterSpacing: "0.005em",
-              lineHeight: 1.1,
-            }}
-          >
-            วัดด่าน พระราม 3
+      <div className="thai-nav__inner">
+        <a className="thai-nav__brand" href="#home" aria-label="วัดด่าน พระราม 3 หน้าแรก">
+          <span className="thai-nav__brand-mark">
+            <img src={Logo} alt="" />
           </span>
-        </Navbar.Brand>
+          <span className="thai-nav__brand-text">
+            <span className="thai-nav__brand-name">วัดด่าน พระราม 3</span>
+            <span className="thai-nav__brand-sub">Wat Dan · Bangkok</span>
+          </span>
+        </a>
 
-        <Nav style={{ marginLeft: "auto", alignItems: "center", gap: "4px" }}>
-          {navData.map(([href, label]) => (
-            <Nav.Link
-              key={href}
-              href={href}
-              style={{
-                color: "#8B1A14",
-                fontSize: "15px",
-                fontFamily: "taviraj, Prompt, sans-serif",
-                fontWeight: 600,
-                padding: "8px 14px",
-                position: "relative",
-                transition: "color 220ms ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#C9962B")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#8B1A14")}
-            >
-              {label}
-            </Nav.Link>
-          ))}
-        </Nav>
-      </Container>
-    </Navbar>
+        <button
+          type="button"
+          className="thai-nav__toggle"
+          aria-label="เปิด/ปิดเมนู"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <ul className="thai-nav__links" role="menubar">
+          {navData.map(([href, label]) => {
+            const targetId = href.split("#")[1];
+            return (
+              <li key={href} role="none">
+                <a
+                  role="menuitem"
+                  className="thai-nav__link"
+                  href={href}
+                  onClick={(e) => {
+                    setOpen(false);
+                    if (!targetId) return;
+                    const el = document.getElementById(targetId);
+                    if (el) {
+                      e.preventDefault();
+                      el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      window.history.replaceState(null, "", `#${targetId}`);
+                    }
+                  }}
+                >
+                  <span>{label}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </nav>
   );
 };
