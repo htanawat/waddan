@@ -33,13 +33,13 @@ export const Features = (props) => {
       className="text-center"
     >
       <div className="container">
-        {/* <div className="col-md-10 col-md-offset-1 section-title"> */}
         <h2
           style={{
-            color: "#dddddd",
-            fontSize: "36px",
+            fontSize: "38px",
             marginTop: "20px",
-            fontWeight: "700",
+            marginBottom: "30px",
+            fontWeight: 700,
+            fontFamily: "taviraj, serif",
           }}
         >
           หน้าแรก

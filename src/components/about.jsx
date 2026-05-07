@@ -34,8 +34,8 @@ export const About = (props) => {
           </div>
           <div className="col-xs-12 col-md-6">
             <div className="about-text">
-              <h2 style={{ color: "#dddddd" }}>รู้จักวัดด่าน</h2>
-              <p style={{ fontFamily: "chakra" }}>
+              <h2 style={{ fontFamily: "taviraj, serif" }}>รู้จักวัดด่าน</h2>
+              <p style={{ fontFamily: "Prompt, chakra, sans-serif" }}>
                 {props.data ? (
                   <span
                     dangerouslySetInnerHTML={{
