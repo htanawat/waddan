@@ -10,6 +10,8 @@ import { Admin } from "./components/Admin";
 import { Contact } from "./components/contact";
 import { BackToTop } from "./components/BackToTop";
 import { useReveal } from "./components/useReveal";
+import { useScrollFx } from "./components/useScrollFx";
+import { ScrollFxLayer } from "./components/ScrollFxLayer";
 import JsonData from "./data/data.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ContentServices } from "./components/ContentService";
@@ -18,6 +20,7 @@ import "./App.css";
 const Main = () => {
   const [landingPageData, setLandingPageData] = useState({});
   useReveal();
+  useScrollFx();
 
   useEffect(() => {
     setLandingPageData(JsonData);
@@ -43,6 +46,7 @@ const Main = () => {
       <a className="skip-link" href="#main-content">
         ข้ามไปยังเนื้อหาหลัก
       </a>
+      <ScrollFxLayer />
       <Navigation />
       <main id="main-content">
         <Header data={landingPageData.Header} />

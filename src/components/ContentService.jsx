@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -11,118 +11,7 @@ import {
   StopIcon,
   SoundWaveIcon,
 } from "./icons";
-
-// Strip HTML tags safely (article content may contain <br>, <p>, etc.)
-const stripHtml = (html) => {
-  if (typeof window === "undefined") return html || "";
-  const tmp = document.createElement("div");
-  tmp.innerHTML = html || "";
-  return (tmp.textContent || tmp.innerText || "").replace(/\s+/g, " ").trim();
-};
-
-// Choose the best Thai female voice available on this device.
-// Known names: macOS "Kanya" (th-TH female), Google "Premwadee" (Android),
-// Windows "Pattara" / "Achara" — fall back to any Thai voice.
-const FEMALE_HINTS = [
-  "kanya",
-  "premwadee",
-  "pattara",
-  "achara",
-  "noppawan",
-  "sarinrat",
-  "female",
-];
-const pickThaiFemaleVoice = (voices) => {
-  if (!voices || voices.length === 0) return null;
-  const thai = voices.filter((v) => (v.lang || "").toLowerCase().startsWith("th"));
-  const named = thai.find((v) =>
-    FEMALE_HINTS.some((h) => (v.name || "").toLowerCase().includes(h))
-  );
-  if (named) return named;
-  // Some browsers (Chrome) suffix Thai voices with "(Thailand)"
-  if (thai.length) return thai[0];
-  return null;
-};
-
-const useArticleTTS = (text) => {
-  const supported =
-    typeof window !== "undefined" && "speechSynthesis" in window;
-  const [voices, setVoices] = useState([]);
-  const [state, setState] = useState("idle"); // idle | playing | paused
-  const utteranceRef = useRef(null);
-
-  useEffect(() => {
-    if (!supported) return;
-    const load = () => setVoices(window.speechSynthesis.getVoices());
-    load();
-    window.speechSynthesis.onvoiceschanged = load;
-    return () => {
-      window.speechSynthesis.cancel();
-    };
-  }, [supported]);
-
-  const stop = useCallback(() => {
-    if (!supported) return;
-    window.speechSynthesis.cancel();
-    utteranceRef.current = null;
-    setState("idle");
-  }, [supported]);
-
-  const play = useCallback(() => {
-    if (!supported || !text) return;
-
-    if (state === "paused") {
-      window.speechSynthesis.resume();
-      setState("playing");
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    // Chunk long Thai text — Web Speech engines often cut off after ~200–400 chars.
-    const chunks = text.match(/[^.!?\n]{1,220}([.!?\n]|$)/g) || [text];
-    const voice = pickThaiFemaleVoice(voices);
-
-    let idx = 0;
-    const speakNext = () => {
-      if (idx >= chunks.length) {
-        utteranceRef.current = null;
-        setState("idle");
-        return;
-      }
-      const u = new SpeechSynthesisUtterance(chunks[idx]);
-      u.lang = voice ? voice.lang : "th-TH";
-      if (voice) u.voice = voice;
-      u.rate = 0.95;
-      u.pitch = 1.05;
-      u.volume = 1;
-      u.onstart = () => {
-        if (idx === 0) setState("playing");
-      };
-      u.onend = () => {
-        idx += 1;
-        speakNext();
-      };
-      u.onerror = () => {
-        utteranceRef.current = null;
-        setState("idle");
-      };
-      utteranceRef.current = u;
-      window.speechSynthesis.speak(u);
-    };
-
-    setState("loading");
-    speakNext();
-  }, [supported, text, voices, state]);
-
-  const pause = useCallback(() => {
-    if (!supported) return;
-    window.speechSynthesis.pause();
-    setState("paused");
-  }, [supported]);
-
-  return { supported, state, play, pause, stop, hasThaiVoice: !!pickThaiFemaleVoice(voices) };
-};
+import { useArticleTTS, stripHtml } from "./useArticleTTS";
 
 export const ContentServices = () => {
   const [content, setContent] = useState(null);
