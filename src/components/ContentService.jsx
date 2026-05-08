@@ -96,6 +96,9 @@ const useArticleTTS = (text) => {
       u.rate = 0.95;
       u.pitch = 1.05;
       u.volume = 1;
+      u.onstart = () => {
+        if (idx === 0) setState("playing");
+      };
       u.onend = () => {
         idx += 1;
         speakNext();
@@ -108,7 +111,7 @@ const useArticleTTS = (text) => {
       window.speechSynthesis.speak(u);
     };
 
-    setState("playing");
+    setState("loading");
     speakNext();
   }, [supported, text, voices, state]);
 
@@ -190,7 +193,7 @@ export const ContentServices = () => {
         </div>
       </header>
 
-      <article className="article-body">
+      <article id="article-main" className="article-body reveal">
         <div className="article-divider" aria-hidden="true">
           <span className="line" />
           <LotusIcon size={18} />
@@ -213,7 +216,9 @@ export const ContentServices = () => {
             <div className="tts-bar__text">
               <span className="tts-bar__label">ฟังบทความ</span>
               <span className="tts-bar__hint">
-                {tts.state === "playing"
+                {tts.state === "loading"
+                  ? "กำลังเตรียมเสียง..."
+                  : tts.state === "playing"
                   ? "กำลังอ่าน..."
                   : tts.state === "paused"
                   ? "หยุดชั่วคราว"
@@ -223,16 +228,7 @@ export const ContentServices = () => {
               </span>
             </div>
             <div className="tts-bar__controls">
-              {tts.state !== "playing" ? (
-                <button
-                  type="button"
-                  className="tts-btn tts-btn--primary"
-                  onClick={tts.play}
-                  aria-label={tts.state === "paused" ? "เล่นต่อ" : "เริ่มอ่าน"}
-                >
-                  <PlayIcon size={18} />
-                </button>
-              ) : (
+              {tts.state === "playing" ? (
                 <button
                   type="button"
                   className="tts-btn tts-btn--primary"
@@ -240,6 +236,17 @@ export const ContentServices = () => {
                   aria-label="หยุดชั่วคราว"
                 >
                   <PauseIcon size={18} />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="tts-btn tts-btn--primary"
+                  onClick={tts.play}
+                  disabled={tts.state === "loading"}
+                  aria-busy={tts.state === "loading"}
+                  aria-label={tts.state === "paused" ? "เล่นต่อ" : "เริ่มอ่าน"}
+                >
+                  <PlayIcon size={18} />
                 </button>
               )}
               <button

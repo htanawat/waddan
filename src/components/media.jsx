@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { LotusIcon } from "./icons";
+import { CardGrid } from "./CardGrid";
 
 export const Media = () => {
-  const [media, setMedia] = useState([]);
+  const [media, setMedia] = useState(null);
 
   useEffect(() => {
     fetch(
@@ -15,13 +15,18 @@ export const Media = () => {
           dj.data = JSON.parse(dj.data);
         });
         setMedia(data);
-      });
+      })
+      .catch(() => setMedia([]));
   }, []);
 
-  const items = media.filter((m) => m?.state === "active");
+  const items = (media || []).filter((m) => m?.state === "active");
+  const isLoading = media === null;
 
   return (
-    <section id="media" className="cinematic-section cinematic-section--dark">
+    <section
+      id="media"
+      className="cinematic-section cinematic-section--dark reveal"
+    >
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div className="text-center">
           <span className="cinematic-eyebrow">Dharma &middot; Reflections</span>
@@ -36,31 +41,7 @@ export const Media = () => {
           </p>
         </div>
 
-        <div className="thai-grid">
-          {items.map((item, i) => (
-            <Link
-              key={item?.timestamp || i}
-              to={`media/${encodeURIComponent(item?.timestamp)}`}
-              className="thai-card"
-              style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
-            >
-              <div className="thai-card__media">
-                {item?.data?.titleImageURL && (
-                  <img
-                    src={item.data.titleImageURL}
-                    alt={item?.data?.title || ""}
-                    loading="lazy"
-                  />
-                )}
-              </div>
-              <div className="thai-card__body">
-                <h3 className="thai-card__title">{item?.data?.title}</h3>
-                <p className="thai-card__caption">{item?.data?.caption}</p>
-                <span className="thai-card__cta">อ่านต่อ</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <CardGrid items={items} basePath="media" loading={isLoading} />
       </div>
     </section>
   );

@@ -7,9 +7,9 @@ import { About } from "./components/about";
 import { Services } from "./components/services";
 import { Media } from "./components/media";
 import { Admin } from "./components/Admin";
-import { Testimonials } from "./components/testimonials";
-import { Team } from "./components/Team";
 import { Contact } from "./components/contact";
+import { BackToTop } from "./components/BackToTop";
+import { useReveal } from "./components/useReveal";
 import JsonData from "./data/data.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ContentServices } from "./components/ContentService";
@@ -17,6 +17,8 @@ import "./App.css";
 
 const Main = () => {
   const [landingPageData, setLandingPageData] = useState({});
+  useReveal();
+
   useEffect(() => {
     setLandingPageData(JsonData);
   }, []);
@@ -24,7 +26,6 @@ const Main = () => {
   useEffect(() => {
     if (window.location.hash) {
       const id = window.location.hash.slice(1);
-      // Wait for sections to mount
       const tryScroll = (attempts = 0) => {
         const el = document.getElementById(id);
         if (el) {
@@ -39,17 +40,32 @@ const Main = () => {
 
   return (
     <>
-      <div>
-        <Navigation />
+      <a className="skip-link" href="#main-content">
+        ข้ามไปยังเนื้อหาหลัก
+      </a>
+      <Navigation />
+      <main id="main-content">
         <Header data={landingPageData.Header} />
         <Features data={landingPageData.Features} />
         <About data={landingPageData.About} />
         <Services data={landingPageData.Services} />
         <Media data={landingPageData.Services} />
-        {/* <Testimonials data={landingPageData.Testimonials} />
-      <Team data={landingPageData.Team} /> */}
         <Contact data={landingPageData.Contact} />
-      </div>
+      </main>
+      <BackToTop />
+    </>
+  );
+};
+
+const ArticleRoute = ({ type }) => {
+  useReveal();
+  return (
+    <>
+      <a className="skip-link" href="#article-main">
+        ข้ามไปยังเนื้อหาหลัก
+      </a>
+      <ContentServices type={type} />
+      <BackToTop />
     </>
   );
 };
@@ -60,11 +76,8 @@ const App = () => {
       <Routes>
         <Route path="/">
           <Route index element={<Main />} />
-          <Route
-            path="activities/*"
-            element={<ContentServices type="activity" />}
-          />
-          <Route path="media/*" element={<ContentServices type="media" />} />
+          <Route path="activities/*" element={<ArticleRoute type="activity" />} />
+          <Route path="media/*" element={<ArticleRoute type="media" />} />
           <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>

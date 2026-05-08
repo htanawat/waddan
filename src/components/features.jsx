@@ -52,7 +52,7 @@ export const Features = () => {
 
   if (total === 0) {
     return (
-      <section id="features" className="features-section">
+      <section id="features" className="features-section reveal">
         <div className="features-section__glow" aria-hidden="true" />
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
           <div className="hl-frame hl-frame--empty" aria-hidden="true" />
@@ -64,7 +64,7 @@ export const Features = () => {
   const counter = `${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
 
   return (
-    <section id="features" className="features-section">
+    <section id="features" className="features-section reveal">
       <div className="features-section__glow" aria-hidden="true" />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <div
@@ -93,6 +93,8 @@ export const Features = () => {
                       src={item.data.titleImageURL}
                       alt={item?.data?.title || ""}
                       loading={i === 0 ? "eager" : "lazy"}
+                      width="1600"
+                      height="900"
                     />
                   )}
                   <div className="hl-slide__veil" aria-hidden="true" />

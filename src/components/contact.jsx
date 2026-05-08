@@ -35,7 +35,7 @@ export const Contact = () => {
     .filter(Boolean);
 
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className="contact-section reveal">
       <div className="container">
         <div className="text-center" style={{ marginBottom: 56 }}>
           <span className="cinematic-eyebrow">Get in touch</span>

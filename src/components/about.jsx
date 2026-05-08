@@ -21,7 +21,7 @@ export const About = (props) => {
   }, []);
 
   return (
-    <section id="aboutus" style={{ scrollMarginTop: "100px" }}>
+    <section id="aboutus" className="reveal" style={{ scrollMarginTop: "100px" }}>
       <div id="about">
         <div className="container">
           <div className="row" style={{ alignItems: "center" }}>
@@ -31,6 +31,7 @@ export const About = (props) => {
                   src={AboutImage}
                   className="img-responsive"
                   alt="วัดด่าน พระราม 3"
+                  loading="lazy"
                 />
               </div>
             </div>
