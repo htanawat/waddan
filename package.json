@@ -24,7 +24,7 @@
   "scripts": {
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "BUILD_PATH='./build-prod' GENERATE_SOURCEMAP=false REACT_APP_STATE=production NODE_ENV=production react-scripts build --max_old_space_size=8000 build",
-    "s3upload": "aws s3 sync build-prod/ s3://waddan-website --acl public-read --profile pave >> /dev/null && aws cloudfront create-invalidation --distribution-id E2C6I0PFBU6YY3 --paths / --profile pave >> /dev/null",
+    "s3upload": "aws s3 sync build-prod/ s3://waddan-website --acl public-read --profile pave && aws cloudfront create-invalidation --distribution-id E2C6I0PFBU6YY3 --paths '/*' --profile pave",
     "deploy": "npm run build && npm run s3upload",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
