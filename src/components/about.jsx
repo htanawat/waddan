@@ -52,17 +52,31 @@ export const About = (props) => {
                   <LotusIcon className="section-ornament__icon" size={20} />
                   <span className="section-ornament__line" />
                 </div>
-                <p style={{ fontFamily: "Prompt, chakra, sans-serif" }}>
-                  {props.data ? (
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: about?.data?.contents?.[0],
-                      }}
-                    />
-                  ) : (
-                    "loading..."
-                  )}
-                </p>
+                {props.data ? (
+                  (() => {
+                    const raw = about?.data?.contents?.[0] || "";
+                    // Split on blank lines (\n\n) → separate paragraphs.
+                    // Inside each paragraph, single \n becomes <br/>.
+                    const paragraphs = raw
+                      .split(/\r?\n\s*\r?\n/)
+                      .map((p) => p.trim())
+                      .filter(Boolean);
+                    if (paragraphs.length === 0) return null;
+                    return paragraphs.map((p, i) => (
+                      <p
+                        key={i}
+                        style={{ fontFamily: "Prompt, chakra, sans-serif" }}
+                        dangerouslySetInnerHTML={{
+                          __html: p.replace(/\r?\n/g, "<br/>"),
+                        }}
+                      />
+                    ));
+                  })()
+                ) : (
+                  <p style={{ fontFamily: "Prompt, chakra, sans-serif" }}>
+                    loading...
+                  </p>
+                )}
               </div>
             </div>
           </div>

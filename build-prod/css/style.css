@@ -101,6 +101,570 @@ body {
 }
 
 /* ============================================================
+   Admin dashboard — Thai-themed CMS surface
+   ============================================================ */
+.admin-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(201, 150, 43, 0.08) 0%, transparent 55%),
+    var(--paper);
+  font-family: "Prompt", "Noto Sans Thai", sans-serif;
+  color: var(--ink);
+  padding-bottom: 80px;
+}
+
+/* --- Top bar --- */
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(251, 244, 230, 0.94);
+  backdrop-filter: saturate(160%) blur(12px);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  border-bottom: 1px solid rgba(201, 150, 43, 0.32);
+  box-shadow: 0 4px 18px rgba(94, 19, 16, 0.08);
+}
+.admin-topbar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.admin-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+.admin-topbar__brand img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(201, 150, 43, 0.4), 0 4px 10px rgba(94, 19, 16, 0.12);
+}
+.admin-topbar__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  gap: 2px;
+}
+.admin-topbar__brand-name {
+  font-family: "taviraj", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--thai-red-deep);
+}
+.admin-topbar__brand-sub {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--thai-red-soft);
+}
+.admin-topbar__title {
+  flex: 1;
+  font-family: "taviraj", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--thai-red-deep);
+  margin: 0 0 0 14px;
+  padding: 0 0 0 16px;
+  border-left: 1px solid rgba(201, 150, 43, 0.4);
+}
+
+@media (max-width: 720px) {
+  .admin-topbar__inner { padding: 10px 14px; gap: 10px; }
+  .admin-topbar__title { font-size: 16px; padding-left: 12px; margin-left: 8px; }
+  .admin-topbar__brand-text { display: none; }
+}
+
+/* --- Page shell --- */
+.admin-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 28px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+@media (max-width: 720px) {
+  .admin-shell { padding: 18px 14px 32px; gap: 18px; }
+}
+
+/* --- Section card --- */
+.admin-section {
+  background: #fff;
+  border: 1px solid rgba(201, 150, 43, 0.22);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 10px 24px rgba(94, 19, 16, 0.06);
+  overflow: hidden;
+  position: relative;
+}
+.admin-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--thai-gold-bright), var(--thai-red-soft));
+}
+.admin-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 26px 14px;
+  border-bottom: 1px solid rgba(201, 150, 43, 0.14);
+  flex-wrap: wrap;
+}
+.admin-section__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+.admin-section__icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--thai-gold-soft) 0%, var(--thai-gold) 100%);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 10px rgba(201, 150, 43, 0.25);
+}
+.admin-section__icon svg { width: 20px; height: 20px; }
+.admin-section__title {
+  font-family: "taviraj", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--thai-red-deep);
+  margin: 0;
+  letter-spacing: 0.005em;
+}
+.admin-section__sub {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 2px 0 0;
+}
+.admin-section__body {
+  padding: 18px 26px 22px;
+}
+.admin-section__footer {
+  padding: 16px 26px 22px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid rgba(201, 150, 43, 0.14);
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(251, 244, 230, 0.45));
+}
+@media (max-width: 720px) {
+  .admin-section__head,
+  .admin-section__body,
+  .admin-section__footer { padding-left: 16px; padding-right: 16px; }
+}
+
+/* --- Buttons --- */
+.admin-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: "Prompt", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    background 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease,
+    transform 220ms ease,
+    box-shadow 220ms ease;
+  white-space: nowrap;
+  line-height: 1.2;
+  min-height: 40px;
+}
+.admin-btn:focus-visible { outline: 3px solid var(--thai-gold-bright); outline-offset: 2px; }
+.admin-btn:active { transform: translateY(1px); }
+.admin-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.admin-btn--primary {
+  background: linear-gradient(135deg, var(--thai-red-soft) 0%, var(--thai-red-deep) 100%);
+  color: #fff;
+  border-color: rgba(230, 188, 74, 0.4);
+  box-shadow: 0 6px 16px rgba(94, 19, 16, 0.22);
+}
+.admin-btn--primary:hover {
+  background: linear-gradient(135deg, var(--thai-gold) 0%, var(--thai-red-soft) 100%);
+  border-color: var(--thai-gold-bright);
+}
+
+.admin-btn--ghost {
+  background: transparent;
+  color: var(--thai-red-deep);
+  border-color: rgba(201, 150, 43, 0.45);
+}
+.admin-btn--ghost:hover {
+  background: var(--thai-cream);
+  border-color: var(--thai-gold);
+  color: var(--thai-red-deep);
+}
+
+.admin-btn--gold {
+  background: linear-gradient(135deg, var(--thai-gold-soft) 0%, var(--thai-gold) 100%);
+  color: var(--thai-red-deep);
+  border-color: rgba(201, 150, 43, 0.55);
+  box-shadow: 0 6px 14px rgba(201, 150, 43, 0.25);
+}
+.admin-btn--gold:hover {
+  background: linear-gradient(135deg, var(--thai-gold) 0%, var(--thai-gold-bright) 100%);
+}
+
+.admin-btn--danger {
+  background: transparent;
+  color: var(--thai-red-soft);
+  border-color: rgba(167, 38, 29, 0.4);
+}
+.admin-btn--danger:hover {
+  background: rgba(167, 38, 29, 0.08);
+  color: var(--thai-red-deep);
+  border-color: var(--thai-red-soft);
+}
+
+.admin-btn--icon {
+  padding: 8px;
+  min-height: 36px;
+  min-width: 36px;
+  justify-content: center;
+}
+.admin-btn--sm { padding: 6px 12px; min-height: 32px; font-size: 13px; }
+
+/* --- Table --- */
+.admin-table-wrap {
+  border: 1px solid rgba(201, 150, 43, 0.18);
+  border-radius: 12px;
+  overflow: auto;
+  max-height: 480px;
+  background: #fff;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  min-width: 720px;
+}
+.admin-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--thai-cream);
+  font-family: "Prompt", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--thai-red-deep);
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(201, 150, 43, 0.32);
+  white-space: nowrap;
+}
+.admin-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(201, 150, 43, 0.12);
+  vertical-align: middle;
+  color: var(--ink);
+}
+.admin-table tbody tr:nth-child(even) td {
+  background: rgba(251, 244, 230, 0.4);
+}
+.admin-table tbody tr:hover td {
+  background: rgba(230, 188, 74, 0.12);
+}
+.admin-table tbody tr:last-child td { border-bottom: 0; }
+.admin-table .admin-table__index {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--thai-red-soft);
+  width: 1%;
+}
+.admin-table .admin-table__date {
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.admin-table .admin-table__title {
+  font-weight: 500;
+  color: var(--thai-red-deep);
+  max-width: 360px;
+}
+.admin-table .admin-table__thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid rgba(201, 150, 43, 0.25);
+}
+.admin-table .admin-table__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+
+/* --- Inputs --- */
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.admin-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--thai-red-soft);
+}
+.admin-input,
+.admin-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: "Prompt", "Noto Sans Thai", sans-serif;
+  font-size: 15px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid rgba(201, 150, 43, 0.32);
+  border-radius: 10px;
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+  min-height: 42px;
+}
+.admin-input:focus,
+.admin-textarea:focus {
+  outline: none;
+  border-color: var(--thai-gold);
+  box-shadow: 0 0 0 3px rgba(201, 150, 43, 0.15);
+}
+.admin-textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.7;
+}
+.admin-textarea--lg { min-height: 220px; }
+
+/* File input */
+.admin-file {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 1.5px dashed rgba(201, 150, 43, 0.5);
+  border-radius: 10px;
+  background: rgba(251, 244, 230, 0.4);
+  font-family: "Prompt", sans-serif;
+  font-size: 13px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color 220ms ease, background 220ms ease;
+}
+.admin-file:hover {
+  border-color: var(--thai-gold);
+  background: rgba(251, 244, 230, 0.7);
+}
+
+/* --- Toggle switch (overrides Bootstrap Form.Check) --- */
+.admin-toggle .form-check-input {
+  width: 44px !important;
+  height: 24px !important;
+  margin: 0;
+  cursor: pointer;
+  background-color: #d8c9a8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+  border: 1px solid rgba(201, 150, 43, 0.3);
+  box-shadow: none;
+  transition: background-color 220ms ease, border-color 220ms ease;
+}
+.admin-toggle .form-check-input:checked {
+  background-color: var(--thai-gold);
+  border-color: var(--thai-gold);
+}
+.admin-toggle .form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(201, 150, 43, 0.25);
+  border-color: var(--thai-gold);
+}
+
+/* --- Login card --- */
+.admin-login {
+  min-height: calc(100vh - 100px);
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+}
+.admin-login__card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border: 1px solid rgba(201, 150, 43, 0.28);
+  border-radius: 20px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 24px 60px rgba(94, 19, 16, 0.14);
+  padding: 40px 36px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.admin-login__card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--thai-gold-bright), var(--thai-red-soft));
+}
+.admin-login__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.admin-login__brand img { width: 64px; height: 64px; }
+.admin-login__brand-name {
+  font-family: "taviraj", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--thai-red-deep);
+  margin: 0;
+}
+.admin-login__brand-sub {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--thai-gold);
+}
+.admin-login__title {
+  font-family: "taviraj", serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--thai-red-deep);
+  text-align: center;
+  margin: 0 0 4px;
+}
+.admin-login__hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0 0 28px;
+}
+.admin-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- Modal styling — applied via dialogClassName="admin-modal" --- */
+.admin-modal .modal-content {
+  background: #fff;
+  border: 1px solid rgba(201, 150, 43, 0.28);
+  border-radius: 18px;
+  box-shadow: 0 30px 70px rgba(94, 19, 16, 0.25);
+  overflow: hidden;
+}
+.admin-modal .modal-header {
+  background: linear-gradient(180deg, var(--thai-cream), #fff);
+  border-bottom: 1px solid rgba(201, 150, 43, 0.28);
+  padding: 20px 24px;
+}
+.admin-modal .modal-title {
+  font-family: "taviraj", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--thai-red-deep);
+}
+.admin-modal .modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.admin-modal .modal-body hr { display: none; }
+.admin-modal .modal-footer {
+  border-top: 1px solid rgba(201, 150, 43, 0.18);
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(251, 244, 230, 0.45));
+  padding: 16px 24px;
+  gap: 10px;
+}
+.admin-modal img {
+  border-radius: 10px;
+  border: 1px solid rgba(201, 150, 43, 0.25);
+  max-width: 100%;
+  height: auto;
+}
+.admin-modal__paragraph-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.admin-modal__paragraph-stack textarea { min-height: 110px; }
+.admin-modal__pair {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.admin-modal__image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.admin-modal__image-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+/* --- Empty state --- */
+.admin-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  background: rgba(251, 244, 230, 0.5);
+  border-radius: 12px;
+  border: 1px dashed rgba(201, 150, 43, 0.32);
+}
+
+/* --- Inline pair (e.g. contact name + phone) --- */
+.admin-contact-row {
+  display: grid;
+  grid-template-columns: 32px 1fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 4px;
+}
+.admin-contact-row__index {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--thai-red-soft);
+}
+@media (max-width: 540px) {
+  .admin-contact-row {
+    grid-template-columns: 32px 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .admin-contact-row > .admin-input:nth-of-type(2) { grid-column: 2 / span 2; }
+}
+
+/* ============================================================
    Scroll FX — gold progress bar + drifting Thai motifs (parallax)
    ============================================================ */
 
